@@ -60,7 +60,7 @@ badserver() {
 
 #not used yet
 rclonelist() {
-  ls -l /mnt/gdrive/plexguide/backup | grep "^d" | awk '{print $9}' >pgvault.serverlist
+  ls -l /mnt/share/plexguide/backup | grep "^d" | awk '{print $9}' >pgvault.serverlist
 }
 
 pgboxrecall() {
@@ -122,7 +122,7 @@ buildup() {
 }
 ################################################ FOR BACKUP - END
 serverprime() {
-  tree -d -L 1 /mnt/gdrive/plexguide/backup | awk '{print $2}' | tail -n +2 | head -n -2 >/tmp/server.list
+  tree -d -L 1 /mnt/share/plexguide/backup | awk '{print $2}' | tail -n +2 | head -n -2 >/tmp/server.list
 
   ### List Out Apps In Readable Order (One's Not Installed)
   num=0
@@ -167,7 +167,7 @@ EOF
   fi
 
   tempserver=$server
-  ls -l /mnt/gdrive/plexguide/backup/$tempserver | awk '{print $9}' | tail -n +2 >/var/plexguide/pgvault.restoreapps
+  ls -l /mnt/share/plexguide/backup/$tempserver | awk '{print $9}' | tail -n +2 >/var/plexguide/pgvault.restoreapps
 
   ### Blank Out Temp List
   rm -rf /var/plexguide/pgvault.apprecall 1>/dev/null 2>&1
@@ -298,11 +298,11 @@ EOF
     docker restart $program_var 1>/dev/null 2>&1
   fi
 
-  ###### Backing Up Files to GDrive
+  ###### Backing Up Files to Shared Drive
   tee <<-EOF
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-↘️  Sending Zipped Data to Google Drive - $program_var
+↘️  Sending Zipped Data to Shared Drive - $program_var
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
@@ -314,10 +314,10 @@ vfs_mt="$(cat /var/plexguide/vfs_mt)"
 vfs_t="$(cat /var/plexguide/vfs_t)"
 vfs_c="$(cat /var/plexguide/vfs_c)"
 
-  rclone --config /opt/appdata/plexguide/rclone.conf mkdir gdrive:/plexguide/backup/${server_id} 1>/dev/null 2>&1
+  rclone --config /opt/appdata/plexguide/rclone.conf mkdir /mnt/share/plexguide/backup/${server_id} 1>/dev/null 2>&1
 
   rclone moveto ${tarlocation}/${program_var}.tar \
-    gdrive:/plexguide/backup/${server_id}/${program_var}.tar \
+    /mnt/share/plexguide/backup/${server_id}/${program_var}.tar \
 	--config /opt/appdata/plexguide/rclone.conf \
 	-v --checksum --stats-one-line --stats 1s --progress \
 	--tpslimit=10 \
