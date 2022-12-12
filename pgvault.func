@@ -126,7 +126,7 @@ buildup() {
 }
 ################################################ FOR BACKUP - END
 serverprime() {
-  tree -d -L 1 /mnt/gdrive/plexguide/backup | awk '{print $2}' | tail -n +2 | head -n -2 >/tmp/server.list
+  tree -d -L 1 /mnt/share/plexguide/backup | awk '{print $2}' | tail -n +2 | head -n -2 >/tmp/server.list
 
   ### List Out Apps In Readable Order (One's Not Installed)
   num=0
@@ -171,7 +171,7 @@ EOF
   fi
 
   tempserver=$server
-  ls -l /mnt/gdrive/plexguide/backup/$tempserver | awk '{print $9}' | tail -n +2 >/var/plexguide/pgvault.restoreapps
+  ls -l /mnt/share/plexguide/backup/$tempserver | awk '{print $9}' | tail -n +2 >/var/plexguide/pgvault.restoreapps
 
   ### Blank Out Temp List
   rm -rf /var/plexguide/pgvault.apprecall 1>/dev/null 2>&1
@@ -318,10 +318,10 @@ vfs_mt="580G"
 vfs_t="1"
 vfs_c="2"
 
-  rclone --config /opt/appdata/plexguide/rclone.conf mkdir gdrive:/plexguide/backup/${server_id} 1>/dev/null 2>&1
+  rclone --config /opt/appdata/plexguide/rclone.conf mkdir /mnt/share/plexguide/backup/${server_id} 1>/dev/null 2>&1
 
   rclone moveto ${tarlocation}/${program_var}.tar \
-    gdrive:/plexguide/backup/${server_id}/${program_var}.tar \
+    /mnt/share/plexguide/backup/${server_id}/${program_var}.tar \
 	--config /opt/appdata/plexguide/rclone.conf \
 	-v --checksum --stats-one-line --stats 1s --progress \
 	--tpslimit=10 \
@@ -396,7 +396,7 @@ restore_process() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
-  size=$(du -sh --apparent-size /mnt/gdrive/plexguide/backup/${srecall}/${program_var}.tar | /usr/bin/awk '{print $1}')
+  size=$(du -sh --apparent-size /mnt/share/plexguide/backup/${srecall}/${program_var}.tar | /usr/bin/awk '{print $1}')
   sleep 2
   echo "Initial File Size: $size"
   sleep 2
@@ -412,7 +412,7 @@ EOF
 
   rclone --config /opt/appdata/plexguide/rclone.conf --stats-one-line \
     --stats 1s --progress \
-    copy gdrive:/plexguide/backup/${srecall}/${program_var}.tar \
+    copy /mnt/share/plexguide/backup/${srecall}/${program_var}.tar \
     ${tarlocation} \
     -v --checksum --drive-chunk-size=64M --transfers=8
 
