@@ -60,7 +60,7 @@ badserver() {
 
 #not used yet
 rclonelist() {
-  ls -l /mnt/gdrive/plexguide/backup | grep "^d" | awk '{print $9}' >pgvault.serverlist
+  ls -l /mnt/share/plexguide/backup | grep "^d" | awk '{print $9}' >pgvault.serverlist
 }
 
 value() {
@@ -302,11 +302,11 @@ EOF
     docker restart $program_var 1>/dev/null 2>&1
   fi
 
-  ###### Backing Up Files to GDrive
+  ###### Backing Up Files to Shared Drive
   tee <<-EOF
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-↘️  Sending Zipped Data to Google Drive - $program_var
+↘️  Sending Zipped Data to Shared Drive - $program_var
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
@@ -401,11 +401,11 @@ EOF
   echo "Initial File Size: $size"
   sleep 2
 
-  ###### Backing Up Files to GDrive
+  ###### Backing Up Files to Shared Drive
   tee <<-EOF
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-↘️  Downloading Data From Google Drive - $program_var
+↘️  Downloading Data From Shared Drive - $program_var
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 EOF
